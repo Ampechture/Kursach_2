@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import time
 from collections import Counter
 from itertools import combinations
+from wordcloud import WordCloud
 import seaborn as sns
 import networkx as nx
 from article_parse import citation_count
@@ -172,5 +173,30 @@ def main():
 
     print(f"Функция выполнялась: {runtime} секунд(ы)")
 
+
 dataframe = pd.read_csv(r"D:\visual_Studio_Projects\Kursach_3\example.csv",sep ='\t')
-print(dataframe["citation_count"])
+print(dataframe['abstract'])
+
+def wordcloud_wk(df):
+    text = ' '.join(df['abstract'].dropna())
+
+    # Создаем облако слов
+    wordcloud = WordCloud(
+        width=1920,
+        height=1080,
+        background_color='white',
+        max_words=800,
+        contour_width=4,
+        contour_color='steelblue'
+    )
+
+    # Генерируем облако слов
+    wordcloud.generate(text)
+
+    # Отображаем облако слов
+    plt.figure(figsize=(10, 5))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.savefig('most_relationships_graph.png', dpi=300)
+    plt.show()
+wordcloud_wk(dataframe)
